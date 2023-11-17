@@ -128,6 +128,7 @@ export default defineNuxtConfig({
         'Cache-Control': 'public, max-age=0, must-revalidate',
       },
     },
+    '/proxy/**': { proxy: 'https:///**' },
   },
   nitro: {
     alias: {

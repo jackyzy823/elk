@@ -1,4 +1,5 @@
 import type { mastodon } from 'masto'
+import { withoutProtocol } from 'ufo'
 
 export const UserLinkRE = /^(?:https:\/)?\/([^/]+)\/@([^/]+)$/
 export const TagLinkRE = /^https?:\/\/([^/]+)\/tags\/([^/]+)\/?$/
@@ -39,4 +40,20 @@ export function isEmptyObject(object: object) {
 
 export function removeHTMLTags(str: string) {
   return str.replaceAll(HTMLTagRE, '')
+}
+
+export function proxify(url: string) {
+  if (!url)
+    return url
+
+  return `${useRequestURL().origin}/proxy/${withoutProtocol(url)}`
+}
+
+export function proxifyWebsocket(url: string|undefined) {
+  if (!url)
+    return url
+
+  const requestUrl = useRequestURL()
+  requestUrl.protocol = 'wss:'
+  return `${requestUrl.origin}/proxyws/${withoutProtocol(url)}`
 }

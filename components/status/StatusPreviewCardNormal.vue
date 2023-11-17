@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { mastodon } from 'masto'
+import { proxify } from '~/composables/misc'
 
 const props = defineProps<{
   card: mastodon.v1.PreviewCard
@@ -53,7 +54,7 @@ function loadAttachment() {
     external
   >
     <div
-      v-if="card.image"
+      v-if="proxify(card.image)"
       flex flex-col
       display-block of-hidden
       :class="{
@@ -65,7 +66,7 @@ function loadAttachment() {
     >
       <CommonBlurhash
         :blurhash="card.blurhash"
-        :src="card.image"
+        :src="proxify(card.image)"
         :width="card.width"
         :height="card.height"
         :alt="alt"

@@ -1,0 +1,26 @@
+diff --git a/dist/index.cjs b/dist/index.cjs
+index eb0fb0439a538d6df09cc6f4e1070e83af016961..10c2ab2133cc180c90528a9880cc1e6d0ec23b3e 100644
+--- a/dist/index.cjs
++++ b/dist/index.cjs
+@@ -373,7 +373,7 @@ class MastoConfig {
+             : protocols;
+     }
+     resolveHttpPath(path, params) {
+-        const url = new URL(path, this.props.url);
++        const url = new URL(path.replace(/^\//, ''), this.props.url);
+         if (params) {
+             url.search = this.serializer.serializeQueryString(params);
+         }
+diff --git a/dist/index.js b/dist/index.js
+index d1b4cee801b43af22251a592bdfbd9a7cd9b6f44..51d571f51a0b2f99771f3130ae0002a00c25946c 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -371,7 +371,7 @@ class MastoConfig {
+             : protocols;
+     }
+     resolveHttpPath(path, params) {
+-        const url = new URL(path, this.props.url);
++        const url = new URL(path.replace(/^\//, ''), this.props.url);
+         if (params) {
+             url.search = this.serializer.serializeQueryString(params);
+         }

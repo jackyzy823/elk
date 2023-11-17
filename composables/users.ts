@@ -125,7 +125,8 @@ export async function loginTo(masto: ElkMasto, user: Overwrite<UserLogin, { acco
   const instance = mastoLogin(masto, user)
 
   // GoToSocial only API
-  const url = `https://${user.server}`
+  // const url = `${useRequestURL().origin}/proxy/${user.server}`
+  const url = proxify(user.server)
   fetch(`${url}/nodeinfo/2.0`).then(r => r.json()).then((info) => {
     nodes.value[user.server] = info
   }).catch(() => undefined)
@@ -172,6 +173,7 @@ export async function loginTo(masto: ElkMasto, user: Overwrite<UserLogin, { acco
 const accountPreferencesMap = new Map<string, Partial<mastodon.v1.Preference>>()
 
 /**
+ * @param account
  * @returns `true` when user ticked the preference to always expand posts with content warnings
  */
 export function getExpandSpoilersByDefault(account: mastodon.v1.AccountCredentials) {
@@ -179,6 +181,7 @@ export function getExpandSpoilersByDefault(account: mastodon.v1.AccountCredentia
 }
 
 /**
+ * @param account
  * @returns `true` when user selected "Always show media" as Media Display preference
  */
 export function getExpandMediaByDefault(account: mastodon.v1.AccountCredentials) {
@@ -186,6 +189,7 @@ export function getExpandMediaByDefault(account: mastodon.v1.AccountCredentials)
 }
 
 /**
+ * @param account
  * @returns `true` when user selected "Always hide media" as Media Display preference
  */
 export function getHideMediaByDefault(account: mastodon.v1.AccountCredentials) {
@@ -336,6 +340,8 @@ interface UseUserLocalStorageCache {
 
 /**
  * Create reactive storage for the current user
+ * @param key
+ * @param initial
  */
 export function useUserLocalStorage<T extends object>(key: string, initial: () => T): Ref<T> {
   if (process.server || process.test)
@@ -382,6 +388,7 @@ export function useUserLocalStorage<T extends object>(key: string, initial: () =
 
 /**
  * Clear all storages for the given account
+ * @param account
  */
 export function clearUserLocalStorage(account?: mastodon.v1.Account) {
   if (!account)

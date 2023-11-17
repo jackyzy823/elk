@@ -37,19 +37,21 @@ export function mastoLogin(masto: ElkMasto, user: Pick<UserLogin, 'server' | 'to
   const { setParams } = $(masto)
 
   const server = user.server
-  const url = `https://${server}`
+  // the last slash is important for URL concat.
+  const url = `${proxify(server)}/`
   const instance: ElkInstance = reactive(getInstanceCache(server) || { uri: server, accountDomain: server })
   setParams({
     url,
     accessToken: user?.token,
     disableVersionCheck: true,
-    streamingApiUrl: instance?.urls?.streamingApi,
+    streamingApiUrl: proxifyWebsocket(instance?.urls?.streamingApi),
   })
 
   fetchV1Instance({ url }).then((newInstance) => {
     Object.assign(instance, newInstance)
+    // NOTE: Nitro not support , so you need to setup a reverse proxy for this
     setParams({
-      streamingApiUrl: newInstance.urls.streamingApi,
+      streamingApiUrl: proxifyWebsocket(newInstance.urls.streamingApi),
     })
     instanceStorage.value[server] = newInstance
   })
