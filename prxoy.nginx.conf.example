@@ -1,0 +1,32 @@
+### Note: maybe abused!
+location ~* /proxy/(.+?)/(.*) {
+    resolver 8.8.8.8;
+
+    set $proxyurl https://$1/$2$is_args$args;
+    proxy_pass $proxyurl;
+    ## to keep server name in request for ssl SNI
+    proxy_ssl_server_name on;
+    ##for self signed?
+    ##proxy_ssl_verify off;
+
+    # for those return 301/302 with https://
+    proxy_redirect ~*^https://(.+)$ /proxy/$1;
+}
+
+location ~* /proxyws/(.+?)/(.*) {
+    resolver 8.8.8.8;
+
+    set $proxyurl https://$1/$2$is_args$args;
+    proxy_pass $proxyurl;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection upgrade;
+    ## to keep server name in request for ssl SNI
+    proxy_ssl_server_name on;
+    ##for self signed?
+    ##proxy_ssl_verify off;
+}
+
+location / {
+    proxy_pass http://elk;
+}
