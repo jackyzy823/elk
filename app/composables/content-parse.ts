@@ -525,11 +525,11 @@ function replaceCustomEmoji(
           },
           [
             h('source', {
-              srcset: emoji.staticUrl,
+              srcset: proxify(emoji.staticUrl),
               media: '(prefers-reduced-motion: reduce)',
             }),
             h('img', {
-              src: emoji.url,
+              src: proxify(emoji.url),
               alt: `:${name}:`,
             }),
           ],

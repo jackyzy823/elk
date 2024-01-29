@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { mastodon } from 'masto'
+import { proxify } from '~/composables/misc'
 
 const { account } = defineProps<{
   account: mastodon.v1.Account
@@ -36,7 +37,7 @@ function previewHeader() {
   openMediaPreview([{
     id: `${account.acct}:header`,
     type: 'image',
-    previewUrl: account.header,
+    previewUrl: proxify(account.header),
     description: t('account.profile_description', [account.username]),
   }])
 }
@@ -132,7 +133,7 @@ async function copyAccountName() {
       <AccountFollowRequestButton :account="account" :relationship="relationship" />
     </div>
     <component :is="hasHeader ? 'button' : 'div'" border="b base" z-1 @click="hasHeader ? previewHeader() : undefined">
-      <img h-50 height="200" w-full object-cover :src="account.header" :alt="t('account.profile_description', [account.username])">
+      <img h-50 height="200" w-full object-cover :src="proxify(account.header)" :alt="t('account.profile_description', [account.username])">
     </component>
     <div p4 mt--18 flex flex-col gap-4>
       <div relative>

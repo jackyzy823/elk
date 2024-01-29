@@ -2,6 +2,7 @@
 import type { mastodon } from 'masto'
 import { clamp } from '@vueuse/core'
 import { decode } from 'blurhash'
+import { proxify } from '~/composables/misc'
 
 const {
   attachment,
@@ -14,12 +15,12 @@ const {
   isPreview?: boolean
 }>()
 
-const src = computed(() => attachment.previewUrl || attachment.url || attachment.remoteUrl!)
+const src = computed(() => proxify(attachment.previewUrl || attachment.url || attachment.remoteUrl!))
 const srcset = computed(() => [
   [attachment.url, attachment.meta?.original?.width],
   [attachment.remoteUrl, attachment.meta?.original?.width],
   [attachment.previewUrl, attachment.meta?.small?.width],
-].filter(([url]) => url).map(([url, size]) => `${url} ${size}w`).join(', '))
+].filter(([url]) => url).map(([url, size]) => `${proxify(url)} ${size}w`).join(', '))
 
 const rawAspectRatio = computed(() => {
   if (attachment.meta?.original?.aspect)
@@ -111,12 +112,12 @@ const blurHashSrc = computed(() => {
 })
 
 const videoThumbnail = ref(shouldLoadAttachment.value
-  ? attachment.previewUrl
+  ? proxify(attachment.previewUrl)
   : blurHashSrc.value)
 
 watch(shouldLoadAttachment, () => {
   videoThumbnail.value = shouldLoadAttachment.value
-    ? attachment.previewUrl
+    ? proxify(attachment.previewUrl)
     : blurHashSrc.value
 })
 </script>
@@ -148,7 +149,7 @@ watch(shouldLoadAttachment, () => {
           }"
           :class="!shouldLoadAttachment ? 'brightness-60 hover:brightness-70 transition-filter' : ''"
         >
-          <source :src="attachment.url || attachment.previewUrl" type="video/mp4">
+          <source :src="proxify(attachment.url || attachment.previewUrl)" type="video/mp4">
         </video>
         <span
           v-if="!shouldLoadAttachment"
@@ -185,7 +186,7 @@ watch(shouldLoadAttachment, () => {
             objectPosition,
           }"
         >
-          <source :src="attachment.url || attachment.previewUrl" type="video/mp4">
+          <source :src="proxify(attachment.url || attachment.previewUrl)" type="video/mp4">
         </video>
         <span
           v-if="!shouldLoadAttachment"
@@ -202,7 +203,7 @@ watch(shouldLoadAttachment, () => {
     </template>
     <template v-else-if="type === 'audio'">
       <audio controls h-15>
-        <source :src="attachment.url || attachment.previewUrl" type="audio/mp3">
+        <source :src="proxify(attachment.url || attachment.previewUrl)" type="audio/mp3">
       </audio>
     </template>
     <template v-else>

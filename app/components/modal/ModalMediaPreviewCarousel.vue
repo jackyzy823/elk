@@ -3,6 +3,7 @@ import type { Vector2 } from '@vueuse/gesture'
 import type { mastodon } from 'masto'
 import { useGesture } from '@vueuse/gesture'
 import { useReducedMotion } from '@vueuse/motion'
+import { proxify } from '~/composables/misc'
 
 const { media = [] } = defineProps<{
   media?: mastodon.v1.MediaAttachment[]
@@ -299,7 +300,7 @@ const imageStyle = computed(() => ({
           max-h-full
           :style="imageStyle"
           :draggable="false"
-          :src="item.url || item.previewUrl"
+          :src="proxify(item.url || item.previewUrl)"
           :alt="item.description || ''"
         />
       </div>

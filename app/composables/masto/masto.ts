@@ -22,14 +22,16 @@ export function useMastoClient() {
 
 export function mastoLogin(masto: ElkMasto, user: Pick<UserLogin, 'server' | 'token'>) {
   const server = user.server
-  const url = `https://${server}`
+  // the last slash is important for URL concat.
+  const url = `${proxify(server)}/`
   const instance: ElkInstance = reactive(getInstanceCache(server) || { uri: server, accountDomain: server })
   const accessToken = user.token
 
+  // NOTE: Nitro doesn't support proxying websocket, so you need to setup a reverse proxy for this.
   const createStreamingClient = (streamingApiUrl: string | undefined) => {
     // Only create the streaming client when there is a user session
     return streamingApiUrl && currentUser.value
-      ? createStreamingAPIClient({ streamingApiUrl, accessToken, implementation: globalThis.WebSocket })
+      ? createStreamingAPIClient({ streamingApiUrl: `${proxifyWebsocket(streamingApiUrl)}/`, accessToken, implementation: globalThis.WebSocket })
       : undefined
   }
 
