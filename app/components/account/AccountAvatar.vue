@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { mastodon } from 'masto'
+import { proxify } from '~/composables/misc'
 
 const { account } = defineProps<{
   account: mastodon.v1.Account
@@ -17,11 +18,11 @@ const accountAvatarSrc = computed(() => {
 
 <template>
   <img
-    :key="account.avatar"
+    :key="proxify(account.avatar)"
     width="400"
     height="400"
     select-none
-    :src="(error || !loaded) ? 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' : accountAvatarSrc"
+    :src="(error || !loaded) ? 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' : proxify(accountAvatarSrc)"
     :alt="$t('account.avatar_description', [account.username])"
     loading="lazy"
     class="account-avatar object-cover"
