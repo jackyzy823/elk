@@ -183,6 +183,8 @@ export default defineNuxtConfig({
         'Cache-Control': 'public, max-age=0, must-revalidate',
       },
     },
+    // TODO: maybe integrate with https://github.com/unjs/nitro/issues/2070
+    '/proxy/**': { proxy: 'https:///**' },
   },
   nitro: {
     alias: {
