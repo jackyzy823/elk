@@ -107,7 +107,8 @@ export async function loginTo(masto: ElkMasto, user: Overwrite<UserLogin, { acco
   const instance = mastoLogin(masto, user)
 
   // GoToSocial only API
-  const url = `https://${user.server}`
+  // const url = `${useRequestURL().origin}/proxy/${user.server}`
+  const url = proxify(user.server)
   fetch(`${url}/nodeinfo/2.0`).then(r => r.json()).then((info) => {
     nodes.value[user.server] = info
   }).catch(() => undefined)
