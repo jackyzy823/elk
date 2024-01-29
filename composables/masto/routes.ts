@@ -1,12 +1,24 @@
 import { withoutProtocol } from 'ufo'
 import type { mastodon } from 'masto'
 
+//Not sure if i guessed right
+//  /:server?/@:account from pages/[[server]]/@[account]/index.vue
+// We always show account under its original server instance name
+// @xxx@server.com -> server.com is not always the same as apiendpoint
+// Using a different domain name for Mastodon and the users it serves
+// https://docs.joinmastodon.org/admin/config/#local_domain
+// https://github.com/felx/mastodon-documentation/blob/master/Running-Mastodon/Serving_a_different_domain.md
+// You need to request https://localdomain/.well-known/host-meta to get xml webdomain/webflinger?resource=
+// Then request   webdomain/webflinger?resource=acc@localdomain
+// Then get alias from respoonse
+// Or we just use account.url
 export function getAccountRoute(account: mastodon.v1.Account) {
+  const [ server , handle ] = withoutProtocol(account.url).split('/@')
   return useRouter().resolve({
     name: 'account-index',
     params: {
-      server: currentServer.value,
-      account: extractAccountHandle(account),
+      server: server,
+      account: handle,
     },
   })
 }

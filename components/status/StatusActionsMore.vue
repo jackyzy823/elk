@@ -234,6 +234,15 @@ function showFavoritedAndBoostedBy() {
           />
         </NuxtLink>
 
+        <!-- Note: getServerName returns LOCAL_DOMAIN , may different with currentServer(WEB_DOMAIN) -->
+        <NuxtLink v-if="status.url && getServerName(status.account) !== currentServer" :to="getPermalinkUrl(status)">
+          <CommonDropdownItem
+            :text="$t('menu.view_as_original_site')"
+            icon="i-ri:arrow-go-forward-line"
+            :command="command"
+          />
+        </NuxtLink>
+
         <template v-if="isHydrated && currentUser">
           <template v-if="isAuthor">
             <CommonDropdownItem
