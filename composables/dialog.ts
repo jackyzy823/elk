@@ -17,7 +17,7 @@ export const reportStatus = ref<mastodon.v1.Status>()
 
 export const commandPanelInput = ref('')
 
-export const isFirstVisit = useLocalStorage(STORAGE_KEY_FIRST_VISIT, !process.mock)
+export const isFirstVisit = ref(false)
 
 export const isSigninDialogOpen = ref(false)
 export const isPublishDialogOpen = ref(false)
