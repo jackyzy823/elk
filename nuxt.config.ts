@@ -172,7 +172,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     // Static generation
-    '/': { prerender: true },
+    '/': { prerender: false },
     '/settings/**': { prerender: false },
     // incremental regeneration
     '/api/list-servers': { swr: true },
