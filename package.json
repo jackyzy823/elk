@@ -148,7 +148,8 @@
       "pinceau": "patches/pinceau.patch",
       "vue-i18n": "patches/vue-i18n.patch",
       "nuxt-security": "patches/nuxt-security.patch",
-      "nuxt": "patches/nuxt.patch"
+      "nuxt": "patches/nuxt.patch",
+      "masto": "patches/masto.patch"
     }
   },
   "resolutions": {
