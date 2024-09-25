@@ -1,0 +1,44 @@
+diff --git a/dist/index.cjs b/dist/index.cjs
+index 251122b179fa3ee595ced84d2957fc0d8e7725c4..ddd237e96f8e02f1575448e42ab1b2e74669062b 100644
+--- a/dist/index.cjs
++++ b/dist/index.cjs
+@@ -781,7 +781,7 @@ class HttpConfigImpl {
+         return requestInit;
+     }
+     resolvePath(path, params) {
+-        const url = new URL(path, this.props.url);
++        const url = new URL(path.replace(/^\//, ''), this.props.url);
+         if (typeof params === "string") {
+             url.search = params;
+         }
+@@ -831,7 +831,7 @@ class WebSocketConfigImpl {
+         return [this.props.accessToken, ...protocols];
+     }
+     resolvePath(path, params = {}) {
+-        const url = new URL(path, this.props.streamingApiUrl);
++        const url = new URL(path.replace(/^\//, ''), this.props.streamingApiUrl);
+         if (this.props.useInsecureAccessToken) {
+             params.accessToken = this.props.accessToken;
+         }
+diff --git a/dist/index.js b/dist/index.js
+index 6e8d4d8a978593f70b999c24fc7649758e9779f0..10f9d35d01094693bd7fb0ac9742562e843283c0 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -779,7 +779,7 @@ class HttpConfigImpl {
+         return requestInit;
+     }
+     resolvePath(path, params) {
+-        const url = new URL(path, this.props.url);
++        const url = new URL(path.replace(/^\//, ''), this.props.url);
+         if (typeof params === "string") {
+             url.search = params;
+         }
+@@ -829,7 +829,7 @@ class WebSocketConfigImpl {
+         return [this.props.accessToken, ...protocols];
+     }
+     resolvePath(path, params = {}) {
+-        const url = new URL(path, this.props.streamingApiUrl);
++        const url = new URL(path.replace(/^\//, ''), this.props.streamingApiUrl);
+         if (this.props.useInsecureAccessToken) {
+             params.accessToken = this.props.accessToken;
+         }
