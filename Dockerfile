@@ -19,6 +19,10 @@ RUN apk add git --no-cache
 COPY package.json ./
 COPY pnpm-workspace.yaml ./
 COPY pnpm-lock.yaml ./
+# TODO move the content of gen_patch.sh here, so we could generate patch buildtime instead of in the git commit
+# Needed for patches
+COPY pnpm-workspace.yaml ./
+COPY patches ./patches
 RUN pnpm i --frozen-lockfile --ignore-scripts
 
 # Copy all source files
