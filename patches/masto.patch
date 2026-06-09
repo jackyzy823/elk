@@ -1,0 +1,52 @@
+diff --git a/dist/cjs/adapters/config/http-config.js b/dist/cjs/adapters/config/http-config.js
+index 50d0994318e849c8441609bb27886d85bdf593be..f64f387fda4b2146a62b747cfcc1930b0ccfe5e3 100644
+--- a/dist/cjs/adapters/config/http-config.js
++++ b/dist/cjs/adapters/config/http-config.js
+@@ -21,7 +21,7 @@ class HttpConfigImpl {
+         return requestInit;
+     }
+     resolvePath(path, params) {
+-        const url = new URL(path, this.props.url);
++        const url = new URL(path.replace(/^\//, ""), this.props.url);
+         if (typeof params === "string") {
+             url.search = params;
+         }
+diff --git a/dist/cjs/adapters/config/web-socket-config.js b/dist/cjs/adapters/config/web-socket-config.js
+index 7ac8a2ad4ce477377b31bf51757e15304a16be09..258be0bb69a8141a4549f74de5e5056f9a71a48e 100644
+--- a/dist/cjs/adapters/config/web-socket-config.js
++++ b/dist/cjs/adapters/config/web-socket-config.js
+@@ -16,7 +16,7 @@ class WebSocketConfigImpl {
+         return [this.props.accessToken, ...protocols];
+     }
+     resolvePath(path, params = {}) {
+-        const url = new URL(path, this.props.streamingApiUrl);
++        const url = new URL(path.replace(/^\//, ""), this.props.streamingApiUrl);
+         if (this.props.useInsecureAccessToken) {
+             params.accessToken = this.props.accessToken;
+         }
+diff --git a/dist/esm/adapters/config/http-config.js b/dist/esm/adapters/config/http-config.js
+index d58cef3f491a47ffa6aec762bc6b6e70e0541531..c59631f594865bb2ed28ad4a6943802a14051b26 100644
+--- a/dist/esm/adapters/config/http-config.js
++++ b/dist/esm/adapters/config/http-config.js
+@@ -18,7 +18,7 @@ export class HttpConfigImpl {
+         return requestInit;
+     }
+     resolvePath(path, params) {
+-        const url = new URL(path, this.props.url);
++        const url = new URL(path.replace(/^\//, ""), this.props.url);
+         if (typeof params === "string") {
+             url.search = params;
+         }
+diff --git a/dist/esm/adapters/config/web-socket-config.js b/dist/esm/adapters/config/web-socket-config.js
+index 3c38c7df457cd3147b4c953e6f0c6b54e30ce11b..3b1098913a6353177ce1012c028efb4c03389971 100644
+--- a/dist/esm/adapters/config/web-socket-config.js
++++ b/dist/esm/adapters/config/web-socket-config.js
+@@ -13,7 +13,7 @@ export class WebSocketConfigImpl {
+         return [this.props.accessToken, ...protocols];
+     }
+     resolvePath(path, params = {}) {
+-        const url = new URL(path, this.props.streamingApiUrl);
++        const url = new URL(path.replace(/^\//, ""), this.props.streamingApiUrl);
+         if (this.props.useInsecureAccessToken) {
+             params.accessToken = this.props.accessToken;
+         }

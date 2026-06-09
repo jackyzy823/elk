@@ -98,3 +98,6 @@ allowBuilds:
   sharp: true
   simple-git-hooks: true
   vue-demi: false
+
+patchedDependencies:
+  masto: patches/masto.patch
